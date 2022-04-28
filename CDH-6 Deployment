@@ -15,10 +15,10 @@ $ ssh -i /path/to/key_file.pem ubuntu@instance_hostname
 
 
 -----*** Update the server ***-----
-$ sudo apt-get update && sudo apt-get dist-upgrade -y
+sudo apt-get update && sudo apt-get dist-upgrade -y
 
 -----*** Disable transparent huge pages ***-----
-$ sudo nano /etc/rc.local
+sudo nano /etc/rc.local
 ## Add these lines:
 
 if test -f /sys/kernel/mm/transparent_hugepage/enabled; then
@@ -29,13 +29,13 @@ if test -f /sys/kernel/mm/transparent_hugepage/defrag; then
     echo never > /sys/kernel/mm/transparent_hugepage/defrag
 fi
 
-$sudo -i
+sudo -i
 
-$source /etc/rc.local 
+source /etc/rc.local 
 
 -----*** Install NTP ***-----
-$ sudo apt-get install ntp -y 
-$ sudo service ntp status
+sudo apt-get install ntp -y 
+sudo service ntp status
 ## If it isn't running 
 $ sudo service ntp start 
 
@@ -53,22 +53,23 @@ check “No reboot”
 ##### Configuring a local package repository #####
 
 Put s3 files on server
+
 sudo apt-get install awscli
 aws help
 aws s3 ls
 aws s3 ls bucketname
 aws s3 cp s3://bucketname/filename ~
-aws s3 cp s3://cm.repo/CDH-6.3.3-1.cdh6.3.3.p0.1796617-xenial.parcel ~
-aws s3 cp s3://cm.repo/CDH-6.3.3-1.cdh6.3.3.p0.1796617-xenial.parcel.sha ~
-aws s3 cp s3://cm.repo/cm6.3.3-ubuntu1604.tar.gz ~
-aws s3 cp s3://cm.repo/manifest.json ~
+aws s3 cp s3://cm6repo/CDH-6.3.3-1.cdh6.3.3.p0.1796617-xenial.parcel ~
+aws s3 cp s3://cm6repo/CDH-6.3.3-1.cdh6.3.3.p0.1796617-xenial.parcel.sha ~
+aws s3 cp s3://cm6repo/cm6.3.3-ubuntu1604.tar.gz ~
+aws s3 cp s3://cm6repo/manifest.json ~
 ls
 
 ---** Setup web server **---
 
-$ sudo apt-get install apache2 -y
+sudo apt-get install apache2 -y
 
-$ sudo nano /etc/apache2/apache2.conf
+sudo nano /etc/apache2/apache2.conf
 
 <IfModule mime_module>
     #
@@ -119,52 +120,52 @@ $ sudo nano /etc/apache2/apache2.conf
 </IfModule>
 
 
-$ sudo service apache2 restart
+sudo service apache2 restart
 
-$ sudo mkdir -p /var/www/html/cloudera-repos/cm6
+sudo mkdir -p /var/www/html/cloudera-repos/cm6
 
 ----*** Download the Cloudera Manager Repo tarball ***----
 
-$ sudo tar xvfz cm6.3.3-ubuntu1604.tar.gz -C /var/www/html/cloudera-repos/cm6 --strip-components=1
+sudo tar xvfz cm6.3.3-ubuntu1604.tar.gz -C /var/www/html/cloudera-repos/cm6 --strip-components=1
 
-$ sudo chmod -R ugo+rX /var/www/html/cloudera-repos/cm6
+sudo chmod -R ugo+rX /var/www/html/cloudera-repos/cm6
 
 ----*** Seting up internal repository ***----
 
-$ sudo nano /etc/apt/sources.list.d/cloudera-repo.list
+sudo nano /etc/apt/sources.list.d/cloudera-repo.list
 deb [trusted=yes] http://<private-ip>/cloudera-repos/cm6 xenial-cm6 contrib 
 
-$ sudo apt-get update 
+sudo apt-get update 
 
 >>if you see : GPG error .... NO_PUBKEY then
 sudo apt-key adv --recv-key --keyserver keyserver.ubuntu.com 73985D43B0B19C9F
 
-$ sudo apt-get update 
+sudo apt-get update 
 
 
 ##### Install Cloudera Manager server software #####
 
 ---** Install Oracle JDK **---
 
-$ sudo apt-get install oracle-j2sdk1.8 -y
+sudo apt-get install oracle-j2sdk1.8 -y
 
 ---** Install Cloudera Manager packages **---
 
-$ sudo apt-get install cloudera-manager-daemons cloudera-manager-agent cloudera-manager-server -y
+sudo apt-get install cloudera-manager-daemons cloudera-manager-agent cloudera-manager-server -y
 
-$ sudo apt-get install cloudera-manager-server-db-2 -y
+sudo apt-get install cloudera-manager-server-db-2 -y
 
-$ sudo service cloudera-scm-server-db start
+sudo service cloudera-scm-server-db start
 
 ---** Start Cloudera Manager server **---
 
-$ sudo service cloudera-scm-server start
+sudo service cloudera-scm-server start
 
 ---** Start Cloudera Manager agent **---
 
-$ sudo service cloudera-scm-agent start
+sudo service cloudera-scm-agent start
 
-$ sudo service cloudera-scm-agent status
+sudo service cloudera-scm-agent status
 
 
 ##### Setup custom CDH repository #####
@@ -176,17 +177,17 @@ sudo mv CDH-6.3.3-1.cdh6.3.3.p0.1796617-xenial.parcel /opt/cloudera/parcel-repo
 sudo mv CDH-6.3.3-1.cdh6.3.3.p0.1796617-xenial.parcel.sha /opt/cloudera/parcel-repo
 sudo mv manifest.json /opt/cloudera/parcel-repo
 
-$ cd /opt/cloudera/parcel-repo/
+cd /opt/cloudera/parcel-repo/
 
-$ ll
+ll
 
-$ sudo chown cloudera-scm:cloudera-scm CDH-6.3.3-1.cdh6.3.3.p0.1796617-xenial.parcel
+sudo chown cloudera-scm:cloudera-scm CDH-6.3.3-1.cdh6.3.3.p0.1796617-xenial.parcel
 
-$ sudo chown cloudera-scm:cloudera-scm CDH-6.3.3-1.cdh6.3.3.p0.1796617-xenial.parcel.sha
+sudo chown cloudera-scm:cloudera-scm CDH-6.3.3-1.cdh6.3.3.p0.1796617-xenial.parcel.sha
 
-$ sudo chown cloudera-scm:cloudera-scm manifest.json
+sudo chown cloudera-scm:cloudera-scm manifest.json
 
-$ cd
+cd
 
 ---** Restart Cloudera manager server **---
 
