@@ -7,7 +7,10 @@ Start a instance with minimum 8 GB ram (preferably m4.large)
 In seccurity group - Select "Default" security group
 
 Ubuntu 16 image
+ami-003ba08113592046f
+(oregon)
 ami-004d038b7950c224c
+(N.Virginia)
 
 Edit Deafult security group as below
 all traffic - your-ip/32
