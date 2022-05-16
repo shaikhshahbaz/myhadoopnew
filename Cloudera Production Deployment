@@ -23,8 +23,10 @@ All traffic     default-sec-group-id
 All traffic     private-subnet-cidr/24
 
 
------*** Launch public nodes ***-----
+-----*** Launch public node (CM) ***-----
 
+ami-004d038b7950c224c
+(N.Virginia)
 
 -----*** Update the server ***-----
 $ sudo apt-get update && sudo apt-get dist-upgrade -y
@@ -168,6 +170,17 @@ pid-file=/var/run/mysqld/mysqld.pid
 sql_mode=STRICT_ALL_TABLES
 
 ==========================================================================
+         OR
+## Remove and upload conf file 
+
+cd /etc/mysql/mysql.conf.d/
+ls
+rm mysqlmysqld.cnf
+scp -i rashidlinuxkey.pem mysqld.cnf ubuntu@CM_IP
+sudo cp mysqld.cnf /etc/mysql/mysql.conf.d/
+
+## Put key too for private subnet conection
+scp -i rashidlinuxkey.pem rashidlinuxkey.pem ubuntu@CM_IP
 
 -----*** Make mysql start on boot ***----
 
