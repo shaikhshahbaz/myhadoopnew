@@ -441,7 +441,7 @@ Go to RM then perform Mysql installation for private network.
 
 mysql -u root -p
 
->> For reports manager (RM)
+>> For reports manager (cms)
 
 mysql> create database rman DEFAULT CHARACTER SET utf8;
 mysql> CREATE USER 'rman'@'ip-10-0-1-65.ec2.internal' IDENTIFIED BY 'password';
@@ -497,7 +497,7 @@ bind-address=(private-ip-o f-cms)
 -----*** Set up Edge node ***-----
 
 
-Add gateway roles on CM node
+Add gateway roles on CM node for hdfs-client and yarn-client
 
 test whether read and write is working
 
