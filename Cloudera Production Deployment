@@ -461,11 +461,8 @@ mysql> create database oozie default character set utf8;
 mysql> CREATE USER 'oozie'@'ip-10-0-1-182.ec2.internal' IDENTIFIED BY 'password';
 mysql> grant all privileges on oozie.* to 'oozie'@'ip-10-0-1-182.ec2.internal' identified by 'password';
 
-== Add mysql driver jar
 
-sudo cp /usr/share/java/mysql-connector-java-5.1.38.jar /opt/cloudera/parcels/CDH/lib/oozie/lib/
-
-
+>> For Hue (Edge node)
 mysql -u root -p
 
 mysql> create database hue default character set utf8 default collate utf8_general_ci;
@@ -475,12 +472,16 @@ mysql> grant all on hue.* to 'hue'@'ip-10-0-0-100.ec2.internal' identified by 'p
 
 ##### Install Mysql jdbc jar on hosts where services are running #####
 
-sudo apt-get install libmysql-java
+1. On HMS/Oozie, ssh 
+2. On Hue, ssh edge
+3. On Rm, ssh cms
 
-sudo cp /usr/share/java/mysql-connector-java-5.1.28.jar /opt/cloudera/parcels/CDH/lib/oozie/lib/
+Install on all 3 hosts: sudo apt-get install libmysql-java
+
+Paste this lib only on oozie: sudo cp /usr/share/java/mysql-connector-java-5.1.28.jar /opt/cloudera/parcels/CDH/lib/oozie/lib/
 
 
-##### On database host
+##### On database host (cms)
 
 sudo su
 
@@ -488,7 +489,7 @@ cd /etc/mysql//mysql.conf.d/
 
 sudo nano mysqld.cnf
 
-bind-address=(private-ip-o f-cms)
+bind-address=(private-ip-of-cms)   or   0.0.0.0 (for everywhere)
 
 ## Now continue installation on CM web ui
 
