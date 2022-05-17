@@ -364,7 +364,7 @@ cd /var/www/html/cloudera-repos/cm6
 After assigning service roles to hosts, when you are on database setup page, do following
 
 ##### Create database for CDH services on respective nodes #####
-Go to RM then perform Mysql installation for private network. 
+Go to cms(RM) then perform Mysql installation for private network. 
 
 		# Preparing external database for cloudera #
 
@@ -400,13 +400,9 @@ Go to RM then perform Mysql installation for private network.
 		## Remove and upload conf file 
 
 		ls
-		rm mysqlmysqld.cnf
-		scp -i rashidlinuxkey.pem mysqld.cnf ubuntu@CM_IP
+		rm mysqld.cnf
+		scp -i rashidlinuxkey.pem mysqld.cnf ubuntu@CM_IP:~
 		sudo cp mysqld.cnf /etc/mysql/mysql.conf.d/
-
-		## Put key too for private subnet conection
-		scp -i rashidlinuxkey.pem rashidlinuxkey.pem ubuntu@CM_IP
-		chmod 600 rashidlinuxkey.pem
 
 		-----*** Make mysql start on boot ***----
 
@@ -415,25 +411,6 @@ Go to RM then perform Mysql installation for private network.
 		-----*** Start mysql ***-----
 
 		sudo service mysql start 
-
-		-----*** Mysql secure install ***----
-
-		$ sudo /usr/bin/mysql_secure_installation
-		[...]
-		Enter current password for root (enter for none):
-		OK, successfully used password, moving on...
-		[...]
-		Set root password? [Y/n] y
-		New password:
-		Re-enter new password:
-		Remove anonymous users? [Y/n] Y
-		[...]
-		Disallow root login remotely? [Y/n] N
-		[...]
-		Remove test database and access to it [Y/n] Y
-		[...]
-		Reload privilege tables now? [Y/n] Y
-		All done!
 
 		-----*** Install mysql JDBC driver ***-----
 
@@ -445,30 +422,30 @@ mysql -u root -p
 >> For reports manager (cms)
 
 mysql> create database rman DEFAULT CHARACTER SET utf8;
-mysql> CREATE USER 'rman'@'ip-10-0-1-65.ec2.internal' IDENTIFIED BY 'password';
+mysql> CREATE USER 'rman'@'ip-10-0-130-15.ec2.internal' IDENTIFIED BY 'password';
 (Note : Enter pri-dns of host where the particular service is running)
-mysql> grant all on rman.* TO 'rman'@'ip-10-0-1-65.ec2.internal' IDENTIFIED BY 'password';
+mysql> grant all on rman.* TO 'rman'@'ip-10-0-130-15.ec2.internal' IDENTIFIED BY 'password';
 
 >> For Hive (HMS/Oozie)
 
 mysql> create database metastore DEFAULT CHARACTER SET utf8;
-mysql> CREATE USER 'hive'@'ip-10-0-1-182.ec2.internal' IDENTIFIED BY 'password';
-mysql> grant all on metastore.* TO 'hive'@'ip-10-0-1-182.ec2.internal' IDENTIFIED BY 'password';
+mysql> CREATE USER 'hive'@'ip-10-0-133-154.ec2.internal' IDENTIFIED BY 'password';
+mysql> grant all on metastore.* TO 'hive'@'ip-10-0-133-154.ec2.internal' IDENTIFIED BY 'password';
 
 
 >> For Oozie (HMS/Oozie)
 
 mysql> create database oozie default character set utf8;
-mysql> CREATE USER 'oozie'@'ip-10-0-1-182.ec2.internal' IDENTIFIED BY 'password';
-mysql> grant all privileges on oozie.* to 'oozie'@'ip-10-0-1-182.ec2.internal' identified by 'password';
+mysql> CREATE USER 'oozie'@'ip-10-0-133-154.ec2.internal' IDENTIFIED BY 'password';
+mysql> grant all privileges on oozie.* to 'oozie'@'ip-10-0-133-154.ec2.internal' identified by 'password';
 
 
 >> For Hue (Edge node)
 mysql -u root -p
 
 mysql> create database hue default character set utf8 default collate utf8_general_ci;
-mysql> CREATE USER 'hue'@'ip-10-0-0-100.ec2.internal' IDENTIFIED BY 'password';
-mysql> grant all on hue.* to 'hue'@'ip-10-0-0-100.ec2.internal' identified by 'password';
+mysql> CREATE USER 'hue'@'ip-10-0-4-62.ec2.internal' IDENTIFIED BY 'password';
+mysql> grant all on hue.* to 'hue'@'ip-10-0-4-62.ec2.internal' identified by 'password';
 
 
 ##### Install Mysql jdbc jar on hosts where services are running #####
@@ -479,10 +456,10 @@ mysql> grant all on hue.* to 'hue'@'ip-10-0-0-100.ec2.internal' identified by 'p
 
 Install on all 3 hosts: sudo apt-get install libmysql-java
 
-Paste this lib only on oozie: sudo cp /usr/share/java/mysql-connector-java-5.1.28.jar /opt/cloudera/parcels/CDH/lib/oozie/lib/
+Paste this lib only on Oozie host: sudo cp /usr/share/java/mysql-connector-java-5.1.38.jar /opt/cloudera/parcels/CDH/lib/oozie/lib/
 
 
-##### On database host (cms)
+##### On database host (cms/rm)
 
 sudo su
 
@@ -491,6 +468,9 @@ cd /etc/mysql//mysql.conf.d/
 sudo nano mysqld.cnf
 
 bind-address=(private-ip-of-cms)   or   0.0.0.0 (for everywhere)
+
+sudo service mysql restart
+
 
 ## Now continue installation on CM web ui
 
