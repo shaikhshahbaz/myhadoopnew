@@ -481,7 +481,13 @@ sudo service mysql restart
 
 Add gateway roles on CM node for hdfs-client and yarn-client
 
+sudo nano /etc/passwd
+sudo passwd hdfs
+su hdfs
+
 test whether read and write is working
+hdfs dfs -mkdir /data
+hdfs dfs -ls /
 
 ## Run a test job
 
