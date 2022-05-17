@@ -474,6 +474,8 @@ sudo service mysql restart
 
 ## Now continue installation on CM web ui
 
+Database host name for all = pvt dns of cms/rm
+hostname, username and password should be specific
 
 
 -----*** Set up Edge node ***-----
