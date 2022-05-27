@@ -416,7 +416,7 @@ Go to cms(RM) then perform Mysql installation for private network.
 
 		sudo apt-get install libmysql-java
 
-
+on CMS/RM
 mysql -u root -p
 
 >> For reports manager (cms)
@@ -456,7 +456,7 @@ mysql> grant all on hue.* to 'hue'@'ip-10-0-4-62.ec2.internal' identified by 'pa
 
 Install on all 3 hosts: sudo apt-get install libmysql-java
 
-Paste this lib only on Oozie host: sudo cp /usr/share/java/mysql-connector-java-5.1.38.jar /opt/cloudera/parcels/CDH/lib/oozie/lib/
+Paste this lib only on Oozie and HMS/RM host: sudo cp /usr/share/java/mysql-connector-java-5.1.38.jar /opt/cloudera/parcels/CDH/lib/oozie/lib/
 
 
 ##### On database host (cms/rm)
