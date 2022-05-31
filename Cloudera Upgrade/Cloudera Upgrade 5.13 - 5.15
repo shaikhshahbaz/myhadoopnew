@@ -2,7 +2,7 @@
 		Cloudera Upgrade 
 ===================================================
 
-
+After Cloudera 5.13 deployment, we will upgrade CM and CDH to version 5.15
 
 ### After installation generate some data on cluster
 
