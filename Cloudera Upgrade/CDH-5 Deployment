@@ -64,7 +64,7 @@ aws s3 ls
 aws s3 cp s3://bucketname/filename ~
 aws s3 cp s3://streamset.1/CDH-5.13.3-1.cdh5.13.3.p0.2-xenial.parcel ~
 aws s3 cp s3://streamset.1/CDH-5.13.3-1.cdh5.13.3.p0.2-xenial.parcel.sha ~
-aws s3 cp s3:// ~
+aws s3 cp s3://streamset.1/cm5.13.3-ubuntu16-04.tar.gz ~
 aws s3 cp s3://streamset.1/manifest.json ~
 ls
 
