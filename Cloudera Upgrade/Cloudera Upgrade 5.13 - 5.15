@@ -128,7 +128,7 @@ $ cp -R /etc/apt/sources.list.d/ repo-bu/
 
 $ sudo mkdir -p /var/www/html/cloudera-repos/cm5.15
 
-$ wget tarball
+aws s3 cp s3://cdh-5.15-upgrade/cm5.15.2-ubuntu16-04.tar.gz ~
 
 $ sudo tar xvfz cm5.15.2-ubuntu16-04.tar.gz -C /var/www/html/cloudera-repos/cm5.15 --strip-components=1
 
