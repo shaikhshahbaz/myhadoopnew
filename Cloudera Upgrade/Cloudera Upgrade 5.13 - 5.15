@@ -126,13 +126,13 @@ $ cp -R /etc/apt/sources.list.d/ repo-bu/
 
 ----*** Download the Cloudera Manager Repo tarball ***----
 
-$ sudo mkdir -p /var/www/html/cloudera-repos/cm5.15
+sudo mkdir -p /var/www/html/cloudera-repos/cm5.15
 
 aws s3 cp s3://cdh-5.15-upgrade/cm5.15.2-ubuntu16-04.tar.gz ~
 
-$ sudo tar xvfz cm5.15.2-ubuntu16-04.tar.gz -C /var/www/html/cloudera-repos/cm5.15 --strip-components=1
+sudo tar xvfz cm5.15.2-ubuntu16-04.tar.gz -C /var/www/html/cloudera-repos/cm5.15 --strip-components=1
 
-$ sudo chmod -R ugo+rX /var/www/html/cloudera-repos/cm5.15
+sudo chmod -R ugo+rX /var/www/html/cloudera-repos/cm5.15
 
 
 ----*** Seting up internal repository ***----
@@ -166,7 +166,7 @@ The default action is to keep your current version.
 
 You will receive a similar prompt for /etc/cloudera-scm-server/db.properties. Answer N to both prompts.
 
->> For embedded psotgre db
+>> For embedded psotgre db only (no need of this in mysql)
 sudo apt-get install cloudera-manager-server-db-2 
 
 * Verify the version of packages installed
@@ -263,6 +263,14 @@ pg_dump -h localhost -p 7432 -U scm > /tmp/scm_server_db_backup.$(date +%Y%m%d)
 (Delete existing manifest from repo)
 
 $ cd /opt/cloudera/parcel-repo/
+
+aws s3 cp s3://cdh-5.15-upgrade/CDH-5.15.2-1.cdh5.15.2.p0.3-xenial.parcel ~
+aws s3 cp s3://cdh-5.15-upgrade/CDH-5.15.2-1.cdh5.15.2.p0.3-xenial.parcel.sha ~
+aws s3 cp s3://cdh-5.15-upgrade/manifest.json ~
+
+sudo mv CDH-5.13.3-1.cdh5.13.3.p0.2-xenial.parcel /opt/cloudera/parcel-repo
+sudo mv CDH-5.13.3-1.cdh5.13.3.p0.2-xenial.parcel.sha /opt/cloudera/parcel-repo
+sudo mv manifest.json /opt/cloudera/parcel-repo
 
 $ ll
 
